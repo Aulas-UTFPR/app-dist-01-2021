@@ -7,8 +7,6 @@ Arquivos:
 
 ```
 |--- src/threads/               Código para as aulas de threads.
-        |--- exemplos           Exemplos de como as aplicações da aula executariam sem Threads.
+        |--- exemplos           Códigos da aula com Threads (depois da entrega da APCC).
         |--- aula               Códigos ensinados em sala de aula.
-|--- src/remoto/                Código para as aulas de chamada de procedimentos remotos.
-|--- webchat/                   Código para um Webchat com Spring
 ```
