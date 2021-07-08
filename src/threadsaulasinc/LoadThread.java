@@ -29,9 +29,16 @@ public class LoadThread {
 			}
 		};
 		
+		Thread td = new Thread() {
+			public void run() {
+				calc(5000);
+			}
+		};
+		
 		ta.start();
-		tb.start();
-		tc.start();
+		// tb.start();
+		// tc.start();
+		// td.start();
 	}
 	
 }

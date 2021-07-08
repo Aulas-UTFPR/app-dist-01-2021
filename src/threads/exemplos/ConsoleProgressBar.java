@@ -27,10 +27,16 @@ public class ConsoleProgressBar {
 	}
 	
 	public void task() { // Simulação de uma tarefa que leva um certo tempo para executar.
-		ConsoleProgressBar.complete += 5;
-		if (ConsoleProgressBar.complete >= 100) {
-			finished = true;
+		while (ConsoleProgressBar.complete < 100) {
+			ConsoleProgressBar.complete += 5;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		finished = true;
 	}
 	
 	public void progressBar(int done) {
@@ -44,10 +50,11 @@ public class ConsoleProgressBar {
 	public static void main(String args[]) throws InterruptedException {
 		ConsoleProgressBar cpbar = new ConsoleProgressBar();
 		ConsoleProgressBar.complete = 0;
-		while(!ConsoleProgressBar.finished) {
+		
+		//while(!ConsoleProgressBar.finished) {
 			cpbar.task();
 			cpbar.progressBar(ConsoleProgressBar.complete);
-			Thread.sleep(500);
-		}
+		//	Thread.sleep(500);
+		//}
 	}
 }
