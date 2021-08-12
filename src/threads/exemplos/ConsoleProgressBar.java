@@ -5,56 +5,56 @@ public class ConsoleProgressBar {
 	static int complete = 0;
 	static boolean finished = false;
 	
-	public static void progressPercentage(int remain, int total) {
-	    if (remain > total) {
-	        throw new IllegalArgumentException();
-	    }
-	    int maxBareSize = 20; // 5 units for 100%
-	    int remainProcent = ((400 * remain) / total) / maxBareSize;
-	    char defaultChar = '-';
-	    String icon = "*";
-	    String bare = new String(new char[maxBareSize]).replace('\0', defaultChar) + "]";
-	    StringBuilder bareDone = new StringBuilder();
-	    bareDone.append("[");
-	    for (int i = 0; i < remainProcent; i++) {
-	        bareDone.append(icon);
-	    }
-	    String bareRemain = bare.substring(remainProcent, bare.length());
-	    System.out.print("\r" + bareDone + bareRemain + " " + remainProcent * 5 + "% ");
-	    if (remain == total) {
-	        System.out.print("\n");
-	    }
-	}
-	
-	public void task() { // Simulação de uma tarefa que leva um certo tempo para executar.
-		while (ConsoleProgressBar.complete < 100) {
-			ConsoleProgressBar.complete += 5;
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	static Thread t1 = new Thread() {
+			public void run() {
+			    while(!finished) {
+					if (complete > 100) {
+				        throw new IllegalArgumentException();
+				    }
+				    int maxBareSize = 20; // 5 units for 100%
+				    int remainProcent = ((400 * complete) / 100) / maxBareSize;
+				    char defaultChar = '-';
+				    String icon = "*";
+				    String bare = new String(new char[maxBareSize]).replace('\0', defaultChar) + "]";
+				    StringBuilder bareDone = new StringBuilder();
+				    bareDone.append("[");
+				    for (int i = 0; i < remainProcent; i++) {
+				        bareDone.append(icon);
+				    }
+				    String bareRemain = bare.substring(remainProcent, bare.length());
+				    System.out.print("\r" + bareDone + bareRemain + " " + remainProcent * 5 + "% ");
+				    if (complete == 100) {
+				        System.out.print("\n");
+				    }
+			    }
 			}
-		}
-		finished = true;
-	}
+		};
 	
-	public void progressBar(int done) {
-		    progressPercentage(done, 100);
-		    try {
-		        Thread.sleep(500);
-		    } catch (Exception e) {
-		    }
-	}
+	static Thread t2 = new Thread() {
+			public void run() {
+				while (ConsoleProgressBar.complete < 100) {
+					ConsoleProgressBar.complete += 5;
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				finished = true;
+			}
+		};
+		
 	
 	public static void main(String args[]) throws InterruptedException {
 		ConsoleProgressBar cpbar = new ConsoleProgressBar();
 		ConsoleProgressBar.complete = 0;
 		
-		//while(!ConsoleProgressBar.finished) {
-			cpbar.task();
-			cpbar.progressBar(ConsoleProgressBar.complete);
-		//	Thread.sleep(500);
-		//}
+		t1.start();
+		t2.start();
+		
+		//cpbar.task();
+		//cpbar.progressPercentage(100);
+			
 	}
 }
